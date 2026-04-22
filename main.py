@@ -6,13 +6,12 @@ from skills.weather import get_current_weather, get_weather_forecast
 from skills.transit import build_board
 import os
 from dotenv import load_dotenv
-from 
 
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-bot = telebot.TeleBot("8304998619:AAGGQgRwqA94qlqMB1-xVvLx-lkAuTp8684")
+bot = telebot.TeleBot(os.getenv("TELEBOT_TOKEN"))
 
 message_history=[{"role": "system", "content": "you are a digital secretary/assistant, like tony stark's Jarvis. be charismatic, Use quick and clever humor when appropriate. try to keep your responses short and efficient. if you feel like it would be appropriate, feel free to consolidate information. feel free to use emojis, and feel free to crack a joke every now and then. "}]
 
