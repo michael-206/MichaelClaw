@@ -13,7 +13,8 @@ geolocator = Nominatim(user_agent="transit_app")
 
 def time_until(target_time_str):
     now = datetime.now()
-
+    if not target_time_str or target_time_str == "":
+        return "N/A"
     # parse input like "20:54:12"
     target_time = datetime.strptime(target_time_str, "%H:%M:%S").time()
 
@@ -104,7 +105,7 @@ def build_board(location, radius=400):
         departures = dict(departures)
 
         for departure in departures["stops"][0]["departures"]:
-            arrival_time = time_until(departure["arrival_time"])
+            arrival_time = time_until(departure["arrival_time"] or departure["departure_time"])
             route = departure['trip']['route']['route_short_name']
             route_name = departure['trip']['route']['route_long_name']
             headsign = departure['trip']['trip_headsign']
