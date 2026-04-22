@@ -13,7 +13,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 bot = telebot.TeleBot(os.getenv("TELEBOT_TOKEN"))
 
-message_history=[{"role": "system", "content": "you are a digital secretary/assistant, like tony stark's Jarvis. be charismatic, Use quick and clever humor when appropriate. try to keep your responses short and efficient. if you feel like it would be appropriate, feel free to consolidate information. feel free to use emojis, and feel free to crack a joke every now and then. "}]
+message_history=[{"role": "system", "content": "you are a digital secretary/assistant, like tony stark's Jarvis. be charismatic, Use quick and clever humor when appropriate. try to keep your responses short and efficient. feel free to use emojis, and feel free to crack a joke every now and then. as the user will interact with you most of the time verbaly, dont go on monologues. if the user asks for specific information, respond to the request but dont elaborate too much. if the user asks when the next transit vehicle leaves for a certain route, tell them the departures for that route, dont bore them with information that the user didnt ask for, apply this to all requests."}]
 
 def ask_ai(prompt):
     # ----------------------------
@@ -81,6 +81,11 @@ def ask_ai(prompt):
 def send_hello(message):
     print(message)
     bot.send_message(message.from_user.id, "Health: OK")
+
+@bot.message_handler(commands=["clear","clear_memory"])
+def clear_chat(message):
+    message_history = []
+    bot.send_message(message.from_user.id, "Cleared Memory")
 
 @bot.message_handler()
 def echo_all(message):

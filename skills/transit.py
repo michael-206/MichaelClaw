@@ -62,6 +62,7 @@ def get_nearby_stops(lat, lon, radius):
     }
 
     r = requests.get(url, params=params)
+    print(r.json().get("stops", []))
     return r.json().get("stops", [])
 
 
@@ -74,6 +75,7 @@ def get_departures(onestop_id):
     }
 
     r = requests.get(url, params=params).json()
+    print(r)
     return r
 
 #s-dpz2q2twvb-islingtonaveatvandusenblvd
@@ -104,8 +106,8 @@ def build_board(location, radius=400):
 
         departures = dict(departures)
 
-        for departure in departures["stops"][0]["departures"]:
-            arrival_time = time_until(departure["arrival_time"] or departure["departure_time"])
+        for departure in departures['stops'][0]['departures']:
+            arrival_time = time_until(departure['arrival_time'] or departure['departure_time'])
             route = departure['trip']['route']['route_short_name']
             route_name = departure['trip']['route']['route_long_name']
             headsign = departure['trip']['trip_headsign']
@@ -118,6 +120,14 @@ def build_board(location, radius=400):
             "departures": departures_list
         })
 
+    for id, stop in enumerate(results):
+        print(f"\n🚏 {stop['stop_name']}")
+        for departure in results[id]['departures']:
+            print(f"{departure['rt_num']} - {departure['rt_name']}")
+            print(f"{departure['headsign']}")
+            print(f"Arriving In: {departure['arr_time']}")
+            print("")
+
     return results
 
 
@@ -129,7 +139,7 @@ if __name__ == "__main__":
     for id, stop in enumerate(data):
         print(f"\n🚏 {stop['stop_name']}")
         for departure in data[id]['departures']:
-            print(f"{departure["rt_num"]} - {departure["rt_name"]}")
-            print(f"{departure["headsign"]}")
-            print(f"Arriving In: {departure["arr_time"]}")
+            print(f"{departure['rt_num']} - {departure['rt_name']}")
+            print(f"{departure['headsign']}")
+            print(f"Arriving In: {departure['arr_time']}")
             print("")
